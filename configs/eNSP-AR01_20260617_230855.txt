@@ -1,0 +1,46 @@
+[V200R003C00]
+#
+ snmp-agent local-engineid 800007DB03000000000000
+ snmp-agent 
+#
+ clock timezone China-Standard-Time minus 08:00:00
+#
+portal local-server load portalpage.zip
+#
+ drop illegal-mac alarm
+#
+ undo info-center enable
+#
+ set cpu-usage threshold 80 restore 75
+#
+aaa 
+ authentication-scheme default
+ authorization-scheme default
+ accounting-scheme default
+ domain default 
+ domain default_admin 
+ local-user admin password cipher %$%$WUoA:=j>DC;8X0GT@F.G>=a9%$%$
+ local-user admin privilege level 15
+ local-user admin service-type telnet
+#
+firewall zone Local
+ priority 15
+#
+interface GigabitEthernet0/0/0
+ ip address 192.168.76.2 255.255.255.0 
+#
+interface GigabitEthernet0/0/1
+#
+interface GigabitEthernet0/0/2
+#
+interface NULL0
+#
+user-interface con 0
+ authentication-mode password
+user-interface vty 0 4
+ authentication-mode aaa
+user-interface vty 16 20
+#
+wlan ac
+#
+return
