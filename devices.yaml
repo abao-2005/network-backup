@@ -1,0 +1,27 @@
+# ========== 设备列表（# 开头的是注释，不会被脚本读取）==========
+# device_type 常用值: huawei / cisco_ios / cisco_nxos / h3c / arista_eos
+# protocol: ssh / telnet
+
+# ---- 你的 eNSP 路由器 ----
+- device_type: huawei
+  ip: "192.168.76.2"
+  username: "admin"
+  password: "admin123"
+  name: "eNSP-AR01"
+  protocol: telnet
+
+# ---- 添加更多设备：复制上面的 7 行，改 IP/密码/名称即可 ----
+# - device_type: huawei
+#   ip: "192.168.76.3"
+#   username: "admin"
+#   password: "admin123"
+#   name: "eNSP-SW01"
+#   protocol: telnet
+
+# ---- 真实思科设备示例（SSH）----
+# - device_type: cisco_ios
+#   ip: "10.1.1.1"
+#   username: "netadmin"
+#   password: "your-password"
+#   name: "Core-SW"
+#   protocol: ssh

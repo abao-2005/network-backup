@@ -1,0 +1,10 @@
+# ========== 要推送给路由器的配置命令（# 开头的是注释，会被跳过）==========
+# 给路由器加一条标语
+header login information "Hello from deploy script"
+
+# 给接口加个描述
+interface GigabitEthernet0/0/0
+description deployed_by_auto_tool
+
+# 加一条静态路由
+ip route-static 10.1.1.0 255.255.255.0 192.168.76.100
