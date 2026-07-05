@@ -17,11 +17,14 @@ import os                        # 用来操作文件和目录（创建文件夹
 import subprocess                # 用来执行外部命令（git 操作）
 import logging                   # 用来写日志
 from datetime import datetime    # 用来获取当前时间（用于文件名）
-from netmiko import ConnectHandler  # Netmiko 是连接网络设备的库，支持 SSH 和 Telnet
+from netmiko import ConnectHandler  # Netmiko
+
+
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) 是连接网络设备的库，支持 SSH 和 Telnet
 
 
 # ========== 第2部分：配置日志 ==========
-log_dir = "logs"
+log_dir = os.path.join(_SCRIPT_DIR, "logs")
 os.makedirs(log_dir, exist_ok=True)  # 如果 logs 文件夹不存在，就创建它
 
 logging.basicConfig(
@@ -105,7 +108,7 @@ def backup_single_device(device: dict) -> bool:
         # ---- 保存配置到文件 ----
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")  # 生成时间戳，如 20260617_153020
         filename = f"{device_name}_{timestamp}.txt"  # 文件名：设备名_时间戳.txt
-        filepath = os.path.join("configs", filename)  # 文件路径：configs/设备名_时间戳.txt
+        filepath = os.path.join(_SCRIPT_DIR, "configs", filename)  # 文件路径：configs/设备名_时间戳.txt
 
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(output)  # 把命令输出写入文件
@@ -175,10 +178,10 @@ def main() -> None:
     print("=" * 50)
 
     # ---- 确保备份目录存在 ----
-    os.makedirs("configs", exist_ok=True)
+    os.makedirs(os.path.join(_SCRIPT_DIR, "configs"), exist_ok=True)
 
     # ---- 加载设备列表 ----
-    devices = load_devices("devices.yaml")
+    devices = load_devices(os.path.join(_SCRIPT_DIR, "devices.yaml"))
 
     # ---- 逐台备份 ----
     success_count = 0   # 成功计数器（初始值 0）
@@ -203,7 +206,7 @@ def main() -> None:
     # 如果有远程仓库，请在这里设置地址：
     #   先运行: git remote add origin https://github.com/你的用户名/仓库名.git
     #   然后改下面的 GIT_REMOTE = "origin"
-    GIT_REMOTE = "origin"     # 自动 push 到 GitHub
+    GIT_REMOTE = ""     # 自动 push 到 GitHub
     GIT_BRANCH = "main"
     git_commit_and_push(remote=GIT_REMOTE, branch=GIT_BRANCH)
 

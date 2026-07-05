@@ -16,7 +16,10 @@ from netmiko import ConnectHandler
 from netmiko.ssh_exception import NetmikoTimeoutException, NetmikoAuthenticationException
 
 
-log_dir = "logs"
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+log_dir = os.path.join(_SCRIPT_DIR, "logs")
 os.makedirs(log_dir, exist_ok=True)
 logging.basicConfig(
     filename=os.path.join(log_dir, "deploy.log"),
@@ -109,10 +112,10 @@ def main() -> None:
     print("  网络设备配置自动部署工具 v1.0")
     print("=" * 50)
 
-    os.makedirs("configs", exist_ok=True)
+    os.makedirs(os.path.join(_SCRIPT_DIR, "configs"), exist_ok=True)
 
-    devices = load_devices("devices.yaml")
-    commands = load_commands("config_commands.txt")
+    devices = load_devices(os.path.join(_SCRIPT_DIR, "devices.yaml"))
+    commands = load_commands(os.path.join(_SCRIPT_DIR, "config_commands.txt"))
 
     print(f"\n将要推送的命令（共 {len(commands)} 条）:")
     for i, cmd in enumerate(commands, 1):
